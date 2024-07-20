@@ -11,7 +11,7 @@ builder.RegisterLogger();
 var app = builder.Build();
 
 app.RegisterBookEndpoints();
-
+app.RegisterAuthorsEndpoints();
 
 app.RegisterMiddlewares();
 app.RegisterExceptionHandler();

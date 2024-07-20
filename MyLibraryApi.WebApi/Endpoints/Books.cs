@@ -10,12 +10,16 @@ namespace MyLibraryApi.WebApi.Endpoints
             string path = "/api/v1/books";
 
             var books = routes.MapGroup(path);
+
             books.MapGet("", async (IBookRepository bookRepository) =>
             {
                 return Results.Ok(bookRepository.GetBooks());
-            }).WithDisplayName("GetBooks")
-            .WithName("GetBooks")
-            .WithDescription("Method to get all books.");
+            })
+            .Produces(statusCode: 200, contentType: "application/json")
+            .Produces(statusCode: 500)
+            .WithTags("Books")
+            .WithName("GetAllBooks")
+            .WithSummary("Method to get all book");
 
             books.MapGet("/{id:guid}", async (IBookRepository bookRepository, Guid id) =>
             {
@@ -29,9 +33,13 @@ namespace MyLibraryApi.WebApi.Endpoints
                 {
                     return Results.Ok(book);
                 }
-            }).WithDisplayName("GetBookById").
-            WithName("GetBookById")            
-            .WithDescription("Method to get one book");
+            })                
+            .Produces(statusCode: 200, contentType: "application/json")
+            .Produces(statusCode: 404)
+            .Produces(statusCode: 500)   
+            .WithTags("Books")
+            .WithName("GetOneBook")
+            .WithSummary("Method to get one book");
 
             books.MapPost("", async (IBookRepository bookRepository, Book book) =>
             {
@@ -45,9 +53,13 @@ namespace MyLibraryApi.WebApi.Endpoints
                 {
                     return Results.Created($"{path}/{bk.Id}", bk);
                 }
-            }).WithDisplayName("AddBook")
-            .WithName("AddBook")
-            .WithDescription("Method to add new book.");
+            })
+            .Produces(statusCode: 201, contentType: "application/json")
+            .Produces(statusCode: 400)
+            .Produces(statusCode: 500)
+            .WithTags("Books")
+            .WithName("AddNewBook")
+            .WithSummary("Method to add new book.");
 
             books.MapPut("", async (IBookRepository bookRepository, Book book) =>
             {
@@ -61,9 +73,13 @@ namespace MyLibraryApi.WebApi.Endpoints
                 {
                     return Results.Ok(bk);
                 }
-            }).WithDisplayName("UpdateBook")
-            .WithName("UpdateBook")
-            .WithDescription("Method to update book.");
+            })
+                .Produces(statusCode: 200, contentType: "application/json")
+                .Produces(statusCode: 404)
+                .Produces(statusCode: 500)
+                .WithTags("Books")
+                .WithName("UpdateBook")
+            .WithSummary("Method to update book.");
 
             books.MapDelete("/{id:guid}", async (IBookRepository bookRepository, Guid id) =>
             {
@@ -77,9 +93,14 @@ namespace MyLibraryApi.WebApi.Endpoints
                 {
                     return Results.NotFound();
                 }
-            }).WithDisplayName("DeleteBook")
-            .WithName("DeleteBook")
-            .WithDescription("Method to remove one book");
+            })
+             .Produces(statusCode: 204)
+             .Produces(statusCode: 404)
+             .Produces(statusCode: 500)
+             .WithTags("Books")
+             .WithName("DeleteBook")
+            .WithSummary("Method to remove one book")
+            ;
         }
     }
 }

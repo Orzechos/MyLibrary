@@ -14,7 +14,14 @@ namespace MyLibraryApi.WebApi.Extensions
         {
             builder.Services
                    .AddEndpointsApiExplorer()
-                   .AddSwaggerGen();
+                   .AddSwaggerGen(options =>
+                   {
+                       var doc = $"{typeof(Program).Assembly.GetName().Name}.xml";
+                       
+                       options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,doc));
+
+                       options.OrderActionsBy(x => x.HttpMethod);
+                   });
 
             builder.Services.AddHttpClient();
 
@@ -23,6 +30,7 @@ namespace MyLibraryApi.WebApi.Extensions
         public static void AddScopedServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
         }
 
         public static void RegisterMiddlewares(this WebApplication app)
